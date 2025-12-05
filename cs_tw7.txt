@@ -1,0 +1,60 @@
+Experiment 7 : Digital Signature Generator-Verifier
+
+import java.security.*;
+
+public class DigitalSignatureExample {
+
+    public static void main(String[] args) {
+        try {
+            // Generate key pair
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048); // Key size 2048 bits
+            KeyPair keyPair = keyGen.generateKeyPair();
+
+            // Get private and public keys
+            PrivateKey privateKey = keyPair.getPrivate();
+            PublicKey publicKey = keyPair.getPublic();
+
+            // Create a signature instance
+            Signature signature = Signature.getInstance("SHA256withRSA");
+
+            // Initialize the signature with private key for signing
+            signature.initSign(privateKey);
+
+            // Data to be signed
+            byte[] data = "Hello, this is a message to be signed.".getBytes();
+
+            // Update the data to be signed
+            signature.update(data);
+
+            // Sign the data
+            byte[] digitalSignature = signature.sign();
+            System.out.println("Digital Signature generated.");
+
+            // Verify the signature with the public key
+            Signature verifier = Signature.getInstance("SHA256withRSA");
+            verifier.initVerify(publicKey);
+           data = "Hello, this is a message to be signed".getBytes();
+           verifier.update(data);
+
+            // Verify the signature
+            boolean verified = verifier.verify(digitalSignature);
+            if (verified) {
+                System.out.println("Signature verified. Message integrity and authenticity confirmed.");
+            } else {
+                System.out.println("Signature verification failed. Message may have been tampered with.");
+            }
+
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Sample Output
+Case 1:
+Digital Signature generated.
+Signature verified. Message integrity and authenticity confirmed.
+Case 2:
+Digital Signature generated.
+Signature verification failed. Message may have been tampered with

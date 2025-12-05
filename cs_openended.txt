@@ -1,0 +1,44 @@
+Open ended : Cross Site Scripting –XSS attack
+
+public class XSSAttackSimulation {
+
+    public static void main(String[] args) {
+        // Simulating an XSS attack on a vulnerable web application
+
+        // Example vulnerable HTML page
+        String vulnerablePage = "<html>\n" +
+                "<head><title>Example Vulnerable Page</title></head>\n" +
+                "<body>\n" +
+                "<h1>Welcome to our website!</h1>\n" +
+                "<p>Hello, <span id='username'></span>!</p>\n" +
+                "<script>\n" +
+                "var username = '" + getMaliciousScript() + "';\n" +
+                "document.getElementById('username').textContent = username;\n" +
+                "</script>\n" +
+                "</body>\n" +
+                "</html>";
+
+        // Simulate rendering the vulnerable page
+        System.out.println("Rendering vulnerable page:\n" + vulnerablePage);
+    }
+
+    // Method to generate a malicious script (e.g., for XSS attack)
+    public static String getMaliciousScript() {
+        // Example malicious script (could be more sophisticated in a real attack)
+        return "<script>alert('XSS attack!');</script>";
+    }
+}
+
+	Sample Output
+Rendering vulnerable page:
+<html>
+<head><title>Example Vulnerable Page</title></head>
+<body>
+<h1>Welcome to our website!</h1>
+<p>Hello, <span id='username'></span>!</p>
+<script>
+var username = '<script>alert('XSS attack!');</script>';
+document.getElementById('username').textContent = username;
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+Exp 5: Port Scanner
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class SimplePortScanner {
+
+    public static void main(String[] args) {
+        String targetIP = "127.0.0.1";  // Change this to the target IP address
+        int startPort = 1;
+        int endPort = 1024;
+
+        System.out.println("Scanning ports on " + targetIP + " from " + startPort + " to " + endPort);
+
+        for (int port = startPort; port <= endPort; port++) {
+            try {
+                Socket socket = new Socket(targetIP, port);
+                System.out.println("Port " + port + " is open.");
+                socket.close();
+            } catch (UnknownHostException e) {
+                System.err.println("Unknown host: " + targetIP);
+                break;
+            } catch (IOException e) {
+                // Port is closed or not reachable
+            }
+        }
+
+        System.out.println("Port scanning completed.");
+    }
+}
+Output
+Scanning ports on 127.0.0.1 from 1 to 1024
+Port scanning completed.

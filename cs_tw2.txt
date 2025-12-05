@@ -1,0 +1,73 @@
+TW2 : Wifi Network Analyzer
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class WiFiNetworkAnalyzer {
+
+    public static void main(String[] args) {
+        List<WiFiNetwork> networks = scanWiFiNetworks();
+
+        if (networks.isEmpty()) {
+            System.out.println("No Wi-Fi networks found nearby.");
+        } else {
+            System.out.println("Wi-Fi networks found:");
+            for (WiFiNetwork network : networks) {
+                System.out.println(network);
+            }
+
+            // Sort networks by signal strength (descending)
+            Collections.sort(networks, Comparator.comparingInt(WiFiNetwork::getSignalStrength).reversed());
+
+            System.out.println("\nWi-Fi networks sorted by signal strength:");
+            for (WiFiNetwork network : networks) {
+                System.out.println(network);
+            }
+        }
+    }
+
+    public static List<WiFiNetwork> scanWiFiNetworks() {
+        // Simulated list of scanned Wi-Fi networks
+        List<WiFiNetwork> networks = new ArrayList<>();
+        networks.add(new WiFiNetwork("WiFi Network 1", "00:11:22:33:44:55", -60));
+        networks.add(new WiFiNetwork("WiFi Network 2", "11:22:33:44:55:66", -70));
+        networks.add(new WiFiNetwork("WiFi Network 3", "22:33:44:55:66:77", -80));
+        // Add more networks as needed
+
+        return networks;
+    }
+
+    static class WiFiNetwork {
+        private String ssid;
+        private String bssid;
+        private int signalStrength; // in dBm
+
+        public WiFiNetwork(String ssid, String bssid, int signalStrength) {
+            this.ssid = ssid;
+            this.bssid = bssid;
+            this.signalStrength = signalStrength;
+        }
+
+        public String getSsid() {
+            return ssid;
+        }
+
+        public String getBssid() {
+            return bssid;
+        }
+
+        public int getSignalStrength() {
+            return signalStrength;
+        }
+
+        @Override
+        public String toString() {
+            return "SSID: " + ssid + ", BSSID: " + bssid + ", Signal Strength: " + signalStrength + " dBm";
+        }
+    }
+}
+
+
+

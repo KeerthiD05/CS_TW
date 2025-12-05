@@ -1,0 +1,69 @@
+
+TW1: File Integrity Checker
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
+public class FileIntegrityChecker {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the file path:");
+        String filePath = scanner.nextLine();
+
+        System.out.println("Enter the path to store the hash value:");
+        String hashFilePath = scanner.nextLine();
+
+        try {
+            String currentHash = computeFileHash(filePath);
+            System.out.println("Current Hash: " + currentHash);
+
+            if (Files.exists(Paths.get(hashFilePath))) {
+                String storedHash = new String(Files.readAllBytes(Paths.get(hashFilePath)));
+                System.out.println("Stored Hash: " + storedHash);
+
+                if (currentHash.equals(storedHash)) {
+                    System.out.println("File integrity verified. The file has not been altered.");
+                } else {
+                    System.out.println("File integrity check failed. The file has been altered.");
+                }
+            } else {
+                Files.write(Paths.get(hashFilePath), currentHash.getBytes(), StandardOpenOption.CREATE);
+                System.out.println("Hash value stored successfully.");
+            }
+        } catch (IOException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        scanner.close();
+    }
+
+    private static String computeFileHash(String filePath) throws IOException, NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        FileInputStream fis = new FileInputStream(filePath);
+        byte[] byteArray = new byte[1024];
+        int bytesCount = 0;
+
+        while ((bytesCount = fis.read(byteArray)) != -1) {
+            digest.update(byteArray, 0, bytesCount);
+        }
+
+        fis.close();
+
+        byte[] bytes = digest.digest();
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+
+        return sb.toString();
+    }
+}

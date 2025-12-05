@@ -1,0 +1,52 @@
+Exp 6 : Encryption Decryption
+import java.util.Scanner;
+
+public class CaesarCipher {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter the text to be encrypted: ");
+        String plaintext = scanner.nextLine();
+        
+        System.out.println("Enter the shift value: ");
+        int shift = scanner.nextInt();
+        
+        String encryptedText = encrypt(plaintext, shift);
+        System.out.println("Encrypted Text: " + encryptedText);
+        
+        String decryptedText = decrypt(encryptedText, shift);
+        System.out.println("Decrypted Text: " + decryptedText);
+        
+        scanner.close();
+    }
+
+    public static String encrypt(String plaintext, int shift) {
+        StringBuilder encryptedText = new StringBuilder();
+        
+        for (char character : plaintext.toCharArray()) {
+            if (Character.isLetter(character)) {
+                char base = Character.isUpperCase(character) ? 'A' : 'a';
+                char shifted = (char) ((character - base + shift) % 26 + base);
+                encryptedText.append(shifted);
+            } else {
+                encryptedText.append(character);
+            }
+        }
+        
+        return encryptedText.toString();
+    }
+
+    public static String decrypt(String ciphertext, int shift) {
+        return encrypt(ciphertext, 26 - shift);
+    }
+}
+
+Sample Output
+Enter the text to be encrypted: 
+hello how are you
+Enter the shift value: 
+3
+Encrypted Text: khoor krz duh brx
+Decrypted Text: hello how are you
+

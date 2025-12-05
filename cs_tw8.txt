@@ -1,0 +1,45 @@
+Experiment 8 : Phising Website Detector
+
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
+
+public class PhishingWebsiteDetector {
+
+    // Set of known phishing URLs for demonstration purposes
+    private static final Set<String> knownPhishingURLs = new HashSet<>();
+
+    static {
+        knownPhishingURLs.add("http://example-phishing1.com");
+        knownPhishingURLs.add("http://example-phishing2.com");
+        knownPhishingURLs.add("http://example-phishing3.com");
+        // Add more known phishing URLs as needed
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter the URL to check: ");
+        String url = scanner.nextLine();
+        
+        if (isPhishingURL(url)) {
+            System.out.println("Alert: The site is malicious (phishing)!");
+        } else {
+            System.out.println("The site is safe.");
+        }
+        
+        scanner.close();
+    }
+
+    public static boolean isPhishingURL(String url) {
+        return knownPhishingURLs.contains(url);
+    }
+}
+Sample Output
+Enter the URL to check: 
+http://example-phishing1.com
+Alert: The site is malicious (phishing)!
+
+Enter the URL to check: 
+http://example-phishing4.com
+The site is safe.
