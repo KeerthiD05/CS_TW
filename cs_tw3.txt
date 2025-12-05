@@ -1,0 +1,51 @@
+TW 3: 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Scanner;
+
+public class SimpleFirewall {
+
+    private Set<String> allowedIPs;
+
+    public SimpleFirewall() {
+        allowedIPs = new HashSet<>();
+    }
+
+    public void addAllowedIP(String ip) {
+        allowedIPs.add(ip);
+    }
+
+    public void removeAllowedIP(String ip) {
+        allowedIPs.remove(ip);
+    }
+
+    public boolean isAllowed(String ip) {
+        return allowedIPs.contains(ip);
+    }
+
+    public static void main(String[] args) {
+        SimpleFirewall firewall = new SimpleFirewall();
+        Scanner scanner = new Scanner(System.in);
+
+        // Adding some allowed IPs for testing
+        firewall.addAllowedIP("192.168.1.1");
+        firewall.addAllowedIP("192.168.1.2");
+        firewall.addAllowedIP("10.0.0.1");
+
+        while (true) {
+            System.out.println("Enter an IP address to check (or type 'exit' to quit):");
+            String ip = scanner.nextLine();
+
+            if (ip.equalsIgnoreCase("exit")) {
+                break;
+            }
+
+            if (firewall.isAllowed(ip)) {
+                System.out.println("IP address " + ip + " is allowed.");
+            } else {
+                System.out.println("IP address " + ip + " is blocked.");
+            }
+        }
+        scanner.close();
+    }
+}
